@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qnet"
+version = "0.1.0"
+description = "Modular NetSquid quantum-repeater simulation with heuristic and RL controllers"
+requires-python = ">=3.10"
+# netsquid is installed from the NetSquid PyPI server (requires a netsquid.org account)
+dependencies = ["netsquid>=1.1", "numpy"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+# NetSquid 1.1.8 internals (scipy.sparse paths, numpy scalar conversion in its
+# compiled .pyx modules) emit deprecation warnings; they are not from our code.
+filterwarnings = [
+    "ignore::DeprecationWarning:netsquid.*",
+    "ignore:Conversion of an array with ndim > 0 to a scalar:DeprecationWarning",
+]
